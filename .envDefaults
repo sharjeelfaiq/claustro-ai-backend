@@ -1,0 +1,6 @@
+# Secret key for signing JWT tokens. Use a strong, random string. Keep it secret and unique for each environment.
+# Generate JWT Secret by running the following command in the terminal: node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
+JWT_SECRET=35d91c78f232073e02a87d590420a0737b559515f8b6def929150a168aa29a2beb720f29c3bc2f99f8b4622b35e9ed7483893fbe72cce897b24724f03d3a5852
+
+# JWT token expiry time. Example values: '1h' for 1 hour, '7d' for 7 days.
+JWT_EXPIRY=7d

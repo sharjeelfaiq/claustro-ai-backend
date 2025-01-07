@@ -1,0 +1,45 @@
+{
+  "name": "claustro-ai",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node arc/index.js",
+    "dev": "nodemon arc/index.js",
+    "format": "prettier --write \"src/**/*.{js,jsx}\"",
+    "migrate": "prisma migrate dev",
+    "reset db": "prisma migrate reset"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.1.0",
+    "bcryptjs": "^2.4.3",
+    "colors": "^1.4.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "http-errors": "^2.0.0",
+    "joi": "^17.13.3",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+    "prettier": "^3.4.2",
+    "winston": "^3.17.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22",
+    "prisma": "^6.1.0"
+  },
+  "prisma": {
+    "schema": "./src/prisma/schema.prisma"
+  },
+  "imports": {
+    "#controllers/*": "./src/controllers/*",
+    "#middlewares/*": "./src/middlewares/*",
+    "#models/*": "./src/models/*",
+    "#packages/*": "./src/packages/*",
+    "#routes/*": "./src/routes/*",
+    "#server/*": "./src/server/*",
+    "#services/*": "./src/services/*",
+    "#utility/*": "./src/utility/*"
+  }
+}
