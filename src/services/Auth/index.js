@@ -2,10 +2,16 @@ import { createError } from "../../packages/index.js";
 import { utility } from "#utility/index.js";
 import { user } from "../../models/index.js";
 
-const { hashPassword, comparePassword, generateToken } = utility;
+const {
+  hashPassword,
+  comparePassword,
+  generateToken,
+  expireToken,
+  handleError,
+} = utility;
 
 export const AuthService = {
-  signUp: async ({ email, password }) => {
+  signUp: async ({ name, email, password }) => {
     try {
       const existingUser = await user.findUnique({
         where: { email },
@@ -15,15 +21,15 @@ export const AuthService = {
       }
 
       const hashedPassword = await hashPassword(password);
-      const user = await user.create({
-        data: { email, password: hashedPassword },
+      const newUser = await user.create({
+        data: { name, email, password: hashedPassword },
       });
 
-      const token = generateToken(user.id);
+      const token = generateToken(newUser.id);
 
       const result = {
-        email: user.email,
-        role: user.role,
+        email: newUser.email,
+        role: newUser.role,
         token,
       };
 
@@ -34,17 +40,17 @@ export const AuthService = {
   },
   signIn: async ({ email, password }) => {
     try {
-      const user = await user.findUnique({ where: { email } });
-      if (!user) throw createError(401, "Invalid credentials");
+      const existingUser = await user.findUnique({ where: { email } });
+      if (!existingUser) throw createError(401, "Invalid credentials");
 
-      const isValid = await comparePassword(password, user.password);
+      const isValid = await comparePassword(password, existingUser.password);
       if (!isValid) throw createError(401, "Invalid credentials");
 
-      const token = user.generateAuthToken();
+      const token = generateToken(existingUser.id);
 
       const result = {
-        email: user.email,
-        role: user.role,
+        email: existingUser.email,
+        role: existingUser.role,
         token,
       };
 
@@ -53,9 +59,10 @@ export const AuthService = {
       return handleError(error, "Failed to sign in user");
     }
   },
-  signOut: async ({ email }) => {
+  signOut: async ({ token }) => {
     try {
-      // sign out logic
+      await expireToken(token);
+      return "Successfully signed out";
     } catch (error) {
       return handleError(error, "Failed to sign out user");
     }

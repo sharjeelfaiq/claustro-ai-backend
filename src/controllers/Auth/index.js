@@ -6,6 +6,12 @@ export const AuthController = {
       const userData = req.body;
 
       const result = await AuthService.signUp(userData);
+
+      // Check if result contains an error status
+      if (result.status && result.status >= 400) {
+        return res.status(result.status).json({ message: result.message });
+      }
+
       const token = result.token;
 
       res
@@ -37,9 +43,9 @@ export const AuthController = {
   },
   signOut: async (req, res) => {
     try {
-      const userData = req.body;
+      const token = req.headers.authorization.split(" ")[1];
 
-      const result = await AuthService.signOut(userData);
+      const result = await AuthService.signOut({ token });
 
       res.status(200).json(result);
     } catch (error) {

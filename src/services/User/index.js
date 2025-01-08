@@ -20,46 +20,58 @@ export const UserService = {
   },
   getById: async (userId) => {
     try {
-      const user = await user.findUnique({
-        where: { id: userId },
+      const visitor = await user.findUnique({
+        where: { id: Number(userId) },
       });
 
-      if (!user) {
+      if (!visitor) {
         throw createError(404, "User not found");
       }
 
-      return user;
+      return visitor;
     } catch (error) {
       return handleError(error, `Failed to fetch user by id: ${userId}`);
     }
   },
   updateById: async (userId, userData) => {
     try {
-      const user = await user.update({
-        where: { id: userId },
+      const visitor = await user.update({
+        where: { id: Number(userId) },
         data: userData,
       });
 
-      if (!user) {
+      if (!visitor) {
         throw createError(404, "User not found");
       }
 
-      return user;
+      return visitor;
     } catch (error) {
+      if (error.code === "P2025") {
+        return handleError(
+          createError(404, "User not found"),
+          `Failed to update user by id: ${userId}`,
+        );
+      }
       return handleError(error, `Failed to update user by id: ${userId}`);
     }
   },
   deleteById: async (userId) => {
     try {
-      const user = await user.delete({
-        where: { id: userId },
+      const visitor = await user.delete({
+        where: { id: Number(userId) },
       });
-      if (!user) {
+      if (!visitor) {
         throw createError(404, "User not found");
       }
 
       return "User deleted successfully";
     } catch (error) {
+      if (error.code === "P2025") {
+        return handleError(
+          createError(404, "User not found"),
+          `Failed to delete user by id: ${userId}`,
+        );
+      }
       return handleError(error, `Failed to delete user by id: ${userId}`);
     }
   },
