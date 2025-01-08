@@ -34,6 +34,7 @@
   },
   "imports": {
     "#controllers/*": "./src/controllers/*",
+    "#dataAccess/*": "./src/dataAccess/*",
     "#middlewares/*": "./src/middlewares/*",
     "#models/*": "./src/models/*",
     "#packages/*": "./src/packages/*",
