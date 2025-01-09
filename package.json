@@ -5,8 +5,8 @@
   "main": "src/index.js",
   "type": "module",
   "scripts": {
-    "start": "node arc/index.js",
-    "dev": "nodemon arc/index.js",
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
     "format": "prettier --write \"src/**/*.{js,jsx}\"",
     "migrate": "prisma migrate dev",
     "reset db": "prisma migrate reset"
@@ -21,12 +21,11 @@
     "http-errors": "^2.0.0",
     "joi": "^17.13.3",
     "jsonwebtoken": "^9.0.2",
-    "morgan": "^1.10.0",
     "prettier": "^3.4.2",
     "winston": "^3.17.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.22",
+    "morgan": "^1.10.0",
     "prisma": "^6.1.0"
   },
   "prisma": {
